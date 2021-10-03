@@ -3,7 +3,7 @@ var router = express.Router();
 
 const { Pool } = require('pg');
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL='postgresql://tfjupltyynvjwa:0d20ce307bedc98f3f5d4ce740b26c187e21d468f94055a8761ed46e0f5e009e@ec2-44-198-196-149.compute-1.amazonaws.com:5432/dbbufi8tv9mjkh',
+  connectionString: process.env.DATABASE_URL='postgresql://qekgfutlujgbgg:804aa0198e293807df7e9c3a309947c83e1aae417a8165829ee9bacc2b4e5c25@ec2-34-202-115-62.compute-1.amazonaws.com:5432/d3gkfkho29g7rs',
   ssl: {
     rejectUnauthorized: false
   }
