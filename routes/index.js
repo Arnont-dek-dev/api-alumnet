@@ -17,7 +17,7 @@ router.get('/', function (req, res, next) {
 router.get('/db', async (req, res) => {
   try {
     const client = await pool.connect();
-    const result = await client.query('SELECT * FROM users');
+    const result = await client.query('SELECT student_id, firstname, lastname, citizen_id, dob, sex, email, epigram, status, education_status, graduate_year, major_id, public_relation_id, image_profile FROM public.student');
     const results = { 'results': (result) ? result.rows : null };
     res.json(results);
     client.release();
