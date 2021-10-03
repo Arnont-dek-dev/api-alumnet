@@ -10,7 +10,7 @@ const pool = new Pool({
 });
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', function (req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
@@ -18,8 +18,8 @@ router.get('/db', async (req, res) => {
   try {
     const client = await pool.connect();
     const result = await client.query('SELECT * FROM test_table');
-    const results = { 'results': (result) ? result.rows : null};
-    res.render('pages/db', results );
+    const results = { 'results': (result) ? result.rows : null };
+    res.send(JSON.stringify(results));
     client.release();
   } catch (err) {
     console.error(err);
