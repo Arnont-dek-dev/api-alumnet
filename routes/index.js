@@ -11,7 +11,7 @@ const pool = new Pool({
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('index', { title: 'Express' });  
 });
 
 router.get('/db', async (req, res) => {
@@ -19,7 +19,7 @@ router.get('/db', async (req, res) => {
     const client = await pool.connect();
     const result = await client.query('SELECT * FROM users');
     const results = { 'results': (result) ? result.rows : null };
-    res.send(JSON.stringify(results));
+    res.json(results);
     client.release();
   } catch (err) {
     console.error(err);
