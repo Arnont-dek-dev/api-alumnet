@@ -20,10 +20,10 @@ const getUsers = async(req,res) => {
       }
 }
 
-const createtUsers = async(req,res) => {
+const createUsers = async(req,res) => {
   try {
       const client = await pool.connect();
-      const result = await client.query(`INSERT INTO public.student(student_id) VALUES('${req.body.student_id}')`);
+      const result = await client.query(`INSERT INTO public.student(student_id, firstname, lastname, dob, sex, email, epigram, status, education_status, graduate_year, major_id, public_relation_id, image_profile) VALUES('${req.body.student_id}', '${req.body.firstname}', '${req.body.lastname}', '${req.body.dob}', '${req.bodysex}', '${req.body.email}', '${req.body.epigram}','${req.body.status}', '${req.body.education_status}', '${req.body.graduate_year}', '${req.body.major_id}', '${req.body.public_relation_id}', '${req.body.image_profile}')`);
       const results = { 'results': (result) ? result.rows : null };
       res.json(results);
       client.release();
@@ -35,5 +35,5 @@ const createtUsers = async(req,res) => {
 
 module.exports = {
     getUsers,
-    createtUsers
+    createUsers
 }
