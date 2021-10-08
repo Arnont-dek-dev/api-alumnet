@@ -59,7 +59,7 @@ router.get('/image_profile/:id',db.getSearch);
 router.put('/image_profile/:id',db.updateImage_profile);
 router.put('/epigram/:id',db.updateEqigram);
 router.put('/status/:id',db.updateStatus);
-router.get('timeline/id',db.getTimeline);
+router.get('/timeline/:id',db.getTimeline);
 
 
 
