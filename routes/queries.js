@@ -21,6 +21,7 @@ const getStudents = async (req, res) => {
   }
 }
 
+
 const createStudents = async (req, res) => {
   try {
     const client = await pool.connect();
@@ -555,6 +556,134 @@ const deleteworkplace_history = async (req, res) => {
   }
 }
 
+const getSearch = async (req, res) => {
+  try {
+    const client = await pool.connect();
+    const result = await client.query(`select s.firstname, s.lastname, m."name", f."name", c."name" 
+    from public.student s  inner join major m on s.major_id = m.major_id 
+    inner join faculty f on m.faculty_id = f.faculty_id 
+    inner join campus c on f.campus_id = c.campus_id 
+    where firstname = '${req.params.fristname}' or lastname = '${req.params.lastname}'`);
+    const results = { 'results': (result) ? result.rows : null };
+    res.json(results);
+    client.release();
+  } catch (err) {
+    console.error(err);
+    res.send("Error " + err);
+  }
+}
+
+const getImage_profile = async (req, res) => {
+  try {
+    const client = await pool.connect();
+    const result = await client.query(`SELECT image_profile FROM public.student where student_id ='${req.params.id}'`);
+    const results = { 'results': (result) ? result.rows : null };
+    res.json(results);
+    client.release();
+  } catch (err) {
+    console.error(err);
+    res.send("Error " + err);
+  }
+}
+
+const updateImage_profile = async (req, res) => {
+  try {
+    const client = await pool.connect();
+    const result = await client.query(`UPDATE public.student SET image_profile='${req.body.image_profile}' where student_id ='${req.params.id}'`);
+    const results = { 'results': (result) ? result.rows : null };
+    res.json(results);
+    client.release();
+  } catch (err) {
+    console.error(err);
+    res.send("Error " + err);
+  }
+}
+
+const getStudent = async (req, res) => {
+  try {
+    const client = await pool.connect();
+    const result = await client.query(`SELECT student_id, firstname, lastname, dob, sex, email, epigram, status, education_status, graduate_year, major_id, public_relation_id, image_profile FROM public.student where email = '${req.params.id}'`);
+    const results = { 'results': (result) ? result.rows : null };
+    res.json(results);
+    client.release();
+  } catch (err) {
+    console.error(err);
+    res.send("Error " + err);
+  }
+}
+
+const getStudent_Contacts = async (req, res) => {
+  try {
+    const client = await pool.connect();
+    const result = await client.query(`SELECT student_contact_id, student_id, contact_type, contact_url FROM public.student_contact where student_id = '${req.params.id}'`);
+    const results = { 'results': (result) ? result.rows : null };
+    res.json(results);
+    client.release();
+  } catch (err) {
+    console.error(err);
+    res.send("Error " + err);
+  }
+}
+
+const updateEqigram = async (req, res) => {
+  try {
+    const client = await pool.connect();
+    const result = await client.query(`UPDATE public.student SET epigram=${req.body.epigram}'' where student_id = '${req.params.id}'`);
+    const results = { 'results': (result) ? result.rows : null };
+    res.json(results);
+    client.release();
+  } catch (err) {
+    console.error(err);
+    res.send("Error " + err);
+  }
+}
+const updateStatus = async (req, res) => {
+  try {
+    const client = await pool.connect();
+    const result = await client.query(`UPDATE public.student SET status=${req.body.status}'' where student_id = '${req.params.id}'`);
+    const results = { 'results': (result) ? result.rows : null };
+    res.json(results);
+    client.release();
+  } catch (err) {
+    console.error(err);
+    res.send("Error " + err);
+  }
+}
+
+const getTimeline = async (req, res) => {
+  try {
+    const client = await pool.connect();
+    const result = await client.query(`select
+    firstname ,
+    lastname ,
+    image_profile ,
+    wh."position" ,
+    wh.start_work,
+    w."name" 
+  from
+    public.student
+  inner join workplace_history wh on
+    wh.student_id = student.student_id
+  inner join workplace w on
+    wh.workplace_id = w.workplace_id 
+    where student.student_id = '${req.params.id}'`);
+    const results = { 'results': (result) ? result.rows : null };
+    res.json(results);
+    client.release();
+  } catch (err) {
+    console.error(err);
+    res.send("Error " + err);
+  }
+}
+
+
+
+
+
+
+
+
+
 
 
 module.exports = {
@@ -597,5 +726,15 @@ module.exports = {
   deletePublic_Relation,
   deleteStudent_contact,
   deleteworkplace,
-  deleteworkplace_history
+  deleteworkplace_history,
+
+  getStudent,
+  getStudent_Contacts,
+
+  getSearch,
+  getImage_profile,
+  updateImage_profile,
+  updateEqigram,
+  updateStatus,
+  getTimeline
 }
