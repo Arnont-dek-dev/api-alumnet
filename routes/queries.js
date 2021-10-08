@@ -676,6 +676,32 @@ const getTimeline = async (req, res) => {
   }
 }
 
+const createTimeline = async (req, res) => {
+  try {
+    const client = await pool.connect();
+    const result = await client.query(`with addtimeline as(
+      insert into workplace_history (
+        workplace_id,
+        workplace_history_id , 
+        student_id,
+        "position",
+        start_work
+        )
+        values ('${req.body.workplace_id}','${req.body.workplace_history_id}','${req.body.student_id}','${req.body.position}','${req.body.start_work}')
+      )
+      insert into workplace (
+        workplace_id,
+        "name")
+        values ('${req.body.workplace_id}','${req.body.name}')`);
+    const results = { 'results': (result) ? result.rows : null };
+    res.json(results);
+    client.release();
+  } catch (err) {
+    console.error(err);
+    res.send("Error " + err);
+  }
+}
+
 
 
 
@@ -736,5 +762,6 @@ module.exports = {
   updateImage_profile,
   updateEqigram,
   updateStatus,
-  getTimeline
+  getTimeline,
+  createTimeline
 }
