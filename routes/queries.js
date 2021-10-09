@@ -702,7 +702,29 @@ const createTimeline = async (req, res) => {
   }
 }
 
-
+const getEventByid = async (req, res) => {
+  try {
+    const client = await pool.connect();
+    const result = await client.query(`select
+    pr.title ,
+    pr."content" ,
+    pr.image ,
+    pr.start_activity ,
+    pr.finish_activity
+  from
+    public.student s
+  inner join public_relation pr on
+    s.public_relation_id = pr.public_relation_id
+  where
+    s.major_id = '${req.params.id}'`);
+    const results = { 'results': (result) ? result.rows : null };
+    res.json(results);
+    client.release();
+  } catch (err) {
+    console.error(err);
+    res.send("Error " + err);
+  }
+}
 
 
 
@@ -713,6 +735,8 @@ const createTimeline = async (req, res) => {
 
 
 module.exports = {
+  getEventByid,
+
   getStudents,
   createStudents,
   updateStudents,
