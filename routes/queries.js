@@ -734,8 +734,10 @@ const getEventByid = async (req, res) => {
 
 
 
+
 module.exports = {
   getEventByid,
+
 
   getStudents,
   createStudents,
