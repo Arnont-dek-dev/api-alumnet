@@ -63,6 +63,7 @@ router.get('/timeline/:id',db.getTimeline);
 router.post('/timeline/',db.createTimeline);
 router.get('/search/:id',db.getEventByid);
 router.get('/modelhouse',db.getmodelhouse);
+router.put('/confiremd/:id', db.updateEmail);
 
 
 

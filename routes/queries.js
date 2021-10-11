@@ -748,6 +748,19 @@ const getmodelhouse = async (req, res) => {
   }
 }
 
+const updateEmail = async (req, res) => {
+  try {
+    const client = await pool.connect();
+    const result = await client.query(`UPDATE public.student SET email='${req.params.id}' where student_id = '${req.body.student_id}'`);
+    const results = { 'results': (result) ? result.rows : null };
+    res.json(results);
+    client.release();
+  } catch (err) {
+    console.error(err);
+    res.send("Error " + err);
+  }
+}
+
 
 
 
@@ -759,6 +772,7 @@ const getmodelhouse = async (req, res) => {
 module.exports = {
   getEventByid,
   getmodelhouse,
+  updateEmail,
 
 
   getStudents,
