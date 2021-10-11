@@ -62,6 +62,7 @@ router.put('/status/:id',db.updateStatus);
 router.get('/timeline/:id',db.getTimeline);
 router.post('/timeline/',db.createTimeline);
 router.get('/search/:id',db.getEventByid);
+router.get('/modelhouse',db.getmodelhouse);
 
 
 

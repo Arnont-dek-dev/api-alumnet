@@ -728,6 +728,27 @@ const getEventByid = async (req, res) => {
 
 
 
+const getmodelhouse = async (req, res) => {
+  try {
+    const client = await pool.connect();
+    const result = await client.query(`SELECT s.student_id ,s.firstname, s.lastname ,s.image_profile, a.country ,a.province
+    FROM public.student  s inner join major m on m.major_id = s.major_id 
+    inner join  faculty f on f.faculty_id  = m.faculty_id 
+    inner join campus c on c.campus_id = f.campus_id 
+    inner join address a on s.student_id = a.student_id 
+    where s.graduate_year = '${req.body.id1}' and m.major_id ='${req.body.id2}' and f.faculty_id ='${req.body.id3}' and c.campus_id ='${req.body.id4}'`);
+    const results = { 'results': (result) ? result.rows : null };
+    res.json(results);
+    client.release();
+    // const result = await client.query(`SELECT student_id, firstname, lastname, dob, sex, email, epigram, status, education_status, graduate_year, major_id, public_relation_id, image_profile FROM public.student where email = '${req.body.email}'`);
+
+  } catch (err) {
+    console.error(err);
+    res.send("Error " + err);
+  }
+}
+
+
 
 
 
@@ -737,6 +758,7 @@ const getEventByid = async (req, res) => {
 
 module.exports = {
   getEventByid,
+  getmodelhouse,
 
 
   getStudents,
