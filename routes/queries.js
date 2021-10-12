@@ -7,6 +7,11 @@ const pool = new Pool({
   }
 });
 
+let client = null;
+(async () => {
+  client = await pool.connect();
+})();
+
 
 const getStudents = async (req, res) => {
   try {
@@ -736,8 +741,8 @@ const getmodelhouse = async (req, res) => {
     inner join  faculty f on f.faculty_id  = m.faculty_id 
     inner join campus c on c.campus_id = f.campus_id 
     inner join address a on s.student_id = a.student_id 
-    where s.graduate_year = '${req.body.id1}' and m.major_id ='${req.body.id2}' and f.faculty_id ='${req.body.id3}' and c.campus_id ='${req.body.id4}'`);
-    const results = { 'results': (result) ? result.rows : null };
+    where s.graduate_year = '${req.body.graduate_year}' and m.major_id ='${req.body.major_id}' and f.faculty_id ='${req.body.faculty_id}' and c.campus_id ='${req.body.campus_id}'`);
+    const results = { 'results': (result) ? result.rows : null};
     res.json(results);
     client.release();
     // const result = await client.query(`SELECT student_id, firstname, lastname, dob, sex, email, epigram, status, education_status, graduate_year, major_id, public_relation_id, image_profile FROM public.student where email = '${req.body.email}'`);
@@ -750,11 +755,10 @@ const getmodelhouse = async (req, res) => {
 
 const updateEmail = async (req, res) => {
   try {
-    const client = await pool.connect();
-    const result = await client.query(`UPDATE public.student SET email='${req.params.id}' where student_id = '${req.body.student_id}'`);
+    const result = await client.query(`UPDATE public.student SET email='${req.body.email}' where student_id = '${req.params.id}'`);
     const results = { 'results': (result) ? result.rows : null };
     res.json(results);
-    client.release();
+
   } catch (err) {
     console.error(err);
     res.send("Error " + err);
