@@ -64,6 +64,7 @@ router.post('/timeline/',db.createTimeline);
 router.get('/search/:id',db.getEventByid);
 router.get('/modelhouse',db.getmodelhouse);
 router.put('/student/updateemail/:id', db.updateEmail);
+router.get('/student/infomation/:id',db.getdetailUniversity);
 
 
 

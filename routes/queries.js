@@ -659,19 +659,14 @@ const getTimeline = async (req, res) => {
   try {
     const client = await pool.connect();
     const result = await client.query(`select
-    firstname ,
-    lastname ,
-    image_profile ,
-    wh."position" ,
-    wh.start_work,
-    w."name" 
+    wh."position" ,w."name" 
   from
-    public.student
-  inner join workplace_history wh on
-    wh.student_id = student.student_id
-  inner join workplace w on
-    wh.workplace_id = w.workplace_id 
-    where student.student_id = '${req.params.id}'`);
+    workplace_history wh
+  inner join workplace w
+  on
+    w.workplace_id = wh.workplace_history_id
+  where
+    wh.student_id = '${req.params.id}'`);
     const results = { 'results': (result) ? result.rows : null };
     res.json(results);
     client.release();
@@ -765,7 +760,23 @@ const updateEmail = async (req, res) => {
   }
 }
 
+const getdetailUniversity = async (req, res) => {
+  try {
+    const result = await client.query(`SELECT  m."name" as "major", f."name"as "faculty", c."name"as "campus"
+    FROM major m
+    inner join faculty f on f.faculty_id = m.faculty_id 
+    inner join campus c on c.campus_id = f.campus_id 
+    inner join student s on s.major_id = m.major_id 
+    where s.student_id = '${req.params.id}'`);
+    const results = { 'results': (result) ? result.rows : null};
+    res.json(results);
+    // const result = await client.query(`SELECT student_id, firstname, lastname, dob, sex, email, epigram, status, education_status, graduate_year, major_id, public_relation_id, image_profile FROM public.student where email = '${req.body.email}'`);
 
+  } catch (err) {
+    console.error(err);
+    res.send("Error " + err);
+  }
+}
 
 
 
@@ -776,7 +787,8 @@ const updateEmail = async (req, res) => {
 module.exports = {
   getEventByid,
   getmodelhouse,
-  updateEmail,
+  updateEmail, 
+  getdetailUniversity,
 
 
   getStudents,
