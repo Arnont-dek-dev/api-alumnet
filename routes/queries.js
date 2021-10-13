@@ -762,7 +762,7 @@ const updateEmail = async (req, res) => {
 
 const getdetailUniversity = async (req, res) => {
   try {
-    const result = await client.query(`SELECT  m."name" as "major", f."name"as "faculty", c."name"as "campus"
+    const result = await client.query(`SELECT  s.student_id ,s.firstname ,s.lastname , m."name" as "major", f."name"as "faculty", c."name"as "campus"
     FROM major m
     inner join faculty f on f.faculty_id = m.faculty_id 
     inner join campus c on c.campus_id = f.campus_id 
