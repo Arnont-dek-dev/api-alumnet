@@ -68,6 +68,7 @@ router.put('/student/updateemail/:id', db.updateEmail);
 router.get('/student/infomation/:id',db.getdetailUniversity);
 router.put('/student/epigram_status/:id',db.updateEpigramStatus);
 router.post('/student/company',db.createCompany);
+router.get('/student/profile/:id',db.getdetailprofile);
 
 
 
