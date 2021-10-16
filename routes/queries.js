@@ -1,4 +1,5 @@
 const { request } = require('express');
+const moment = require('moment');
 const { Pool } = require('pg');
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL = 'postgresql://qekgfutlujgbgg:804aa0198e293807df7e9c3a309947c83e1aae417a8165829ee9bacc2b4e5c25@ec2-34-202-115-62.compute-1.amazonaws.com:5432/d3gkfkho29g7rs',
@@ -132,6 +133,18 @@ const getAdmin = async (req, res) => {
     res.send("Error " + err);
   }
 }
+
+const getAdminByemail = async (req, res) => {
+  try {
+    const result = await client.query(`SELECT email, faculty_id, campus_id, fristname, lastnameFROM public."admin" where email = ${req.params.id}`);
+    const results = { 'results': (result) ? result.rows : null };
+    res.json(results);
+  } catch (err) {
+    console.error(err);
+    res.send("Error " + err);
+  }
+}
+
 const createAdmin = async (req, res) => {
   try {
     const client = await pool.connect();
@@ -593,11 +606,9 @@ const getImage_profile = async (req, res) => {
 
 const updateImage_profile = async (req, res) => {
   try {
-    const client = await pool.connect();
     const result = await client.query(`UPDATE public.student SET image_profile='${req.body.image_profile}' where student_id ='${req.params.id}'`);
     const results = { 'results': (result) ? result.rows : null };
     res.json(results);
-    client.release();
   } catch (err) {
     console.error(err);
     res.send("Error " + err);
@@ -778,6 +789,43 @@ const getdetailUniversity = async (req, res) => {
   }
 }
 
+const updateEpigramStatus = async (req, res) => {
+  try {
+    const result = await client.query(`UPDATE student SET epigram='${req.body.epigram}', status='${req.body.status}' where student_id = '${req.params.id}'`);
+    const results = { 'results': (result) ? result.rows : null };
+    res.json(results);
+
+  } catch (err) {
+    console.error(err);
+    res.send("Error " + err);
+  }
+}
+
+const createCompany = async (req, res) => {
+  try {
+    const time = moment().locale('th').format();
+    const result = await client.query(`with company as(
+      insert
+        into
+          workplace ("name")
+        values('${req.body.name}')
+      )
+      insert
+        into
+        workplace_history ( student_id,
+        "position",
+        start_work)
+      values('${req.body.student_id}',
+      '${req.body.position}',
+      '${time}');
+       `);
+    const results = { 'results': (result) ? result.rows : null };
+    res.json(results);
+  } catch (err) {
+    console.error(err);
+    res.send("Error " + err);
+  }
+}
 
 
 
@@ -789,6 +837,8 @@ module.exports = {
   getmodelhouse,
   updateEmail, 
   getdetailUniversity,
+  updateEpigramStatus,
+  createCompany,
 
 
   getStudents,
@@ -797,6 +847,7 @@ module.exports = {
   deleteStudents,
   getAddress,
   getAdmin,
+  getAdminByemail,
   getCampus,
   getFaculty,
   getMajor,

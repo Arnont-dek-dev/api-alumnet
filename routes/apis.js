@@ -14,6 +14,7 @@ router.put('/address/:id',db.updateAddress);
 router.delete('/address/:id',db.deleteAddress);
 
 router.get('/admin',db.getAdmin);
+router.get('/admin/:id',db.getAdminByemail);
 router.post('/admin',db.createAdmin);
 router.put('/admin/:id',db.updateAdmin);
 router.delete('/admin/:id',db.deleteAdmin);
@@ -56,7 +57,7 @@ router.delete('/workplace_history/:id',db.deleteworkplace_history);
 router.get('student_contact:/id',db.getStudent_Contacts);
 router.get('/search/:id',db.getSearch);
 router.get('/image_profile/:id',db.getSearch);
-router.put('/image_profile/:id',db.updateImage_profile);
+router.put('student/image_profile/:id',db.updateImage_profile);
 router.put('/epigram/:id',db.updateEqigram);
 router.put('/status/:id',db.updateStatus);
 router.get('/timeline/:id',db.getTimeline);
@@ -65,6 +66,8 @@ router.get('/search/:id',db.getEventByid);
 router.get('/modelhouse',db.getmodelhouse);
 router.put('/student/updateemail/:id', db.updateEmail);
 router.get('/student/infomation/:id',db.getdetailUniversity);
+router.put('/student/epigram_status/:id',db.updateEpigramStatus);
+router.post('/student/company',db.createCompany);
 
 
 
