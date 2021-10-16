@@ -136,7 +136,7 @@ const getAdmin = async (req, res) => {
 
 const getAdminByemail = async (req, res) => {
   try {
-    const result = await client.query(`SELECT email, faculty_id, campus_id, fristname, lastnameFROM public."admin" where email = ${req.params.id}`);
+    const result = await client.query(`SELECT email, faculty_id, campus_id, fristname, lastname FROM public."admin" where email = '${req.params.id}'`);
     const results = { 'results': (result) ? result.rows : null };
     res.json(results);
   } catch (err) {
